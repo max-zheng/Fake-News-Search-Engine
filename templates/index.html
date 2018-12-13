@@ -1,0 +1,24 @@
+$def with (form)
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Fake News Search Engine</title>
+
+    <meta name="authors" content="Max Zheng, David Bang, James Mekavibul">
+    <meta name="description" content="This is a search engine for checking the context of fake news.">
+
+    <link rel="stylesheet" href="static/style.css" type="text/css">
+    <link rel="Shortcut Icon" href="images/hangmanfavicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <img src="images/logo.png" class="logo" alt="Fake news"><br>
+    <div id="aDiv">
+      <form name="query" class="query" method="POST">
+        $:form.render()
+      <input type="submit"></form>
+    </div>
+
+
+  </body>
+</html>

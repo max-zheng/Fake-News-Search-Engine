@@ -1,0 +1,43 @@
+html {
+  font-size: 18px;
+  font-family: Arial Black;
+  font: comic;
+  text-align: center;
+}
+
+#aDiv{width: 300px; height: 300px; margin: 0 auto;}
+
+.query {
+    text-align:center;
+    font-size: 20pt;
+    margin: 0 auto;
+}
+
+.logo {
+  margin-top: 12%;
+  background-color: white;
+  width:600px;
+  height:150px
+}
+
+.submit {
+  width: 200px;
+  height: 200px;
+}
+
+.titleText {
+  border: 2px solid red;
+  border-radius: 15px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+  font-family: Arial Black;
+  font-size: 16px;
+  background-color: white;
+}
+
+.column {
+    float: left;
+    width: 50%;
+}
