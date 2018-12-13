@@ -56,30 +56,54 @@ def splitQueryBigrams():
     return bigram
 
 def countOccurences(bigram_query, parsed_articles):
-    map = {}
+    # which paragraphs in each document have a bigram match
+    paragraph_map = {}
+    # how many bigram matches for each document
+    occurence_map = {}
 
     for key in parsed_articles:
         match_score = 0
         article_text = parsed_articles[key]
         bigram_set = set()
-        for i in range(0,len(article_text)):
-            for bigram in bigram_query:
-                if i + len(bigram) >= len(article_text):
-                    continue
 
-                if article_text[i:i + len(bigram)].lower() == bigram.lower():
-                    match_score += 1
-                    bigram_set.add(bigram.lower())
+        article_paragraphs = article_text.split('\n\n')
+        for p in range(0, len(article_paragraphs)):
+            paragraph = article_paragraphs[p]
+
+            for i in range(0,len(paragraph)):
+                for bigram in bigram_query:
+                    if i + len(bigram) >= len(paragraph):
+                        continue
+
+                    if paragraph[i:i + len(bigram)].lower() == bigram.lower():
+                        match_score += 1
+                        addToParagraphMap(paragraph_map, key, p)
+                        bigram_set.add(bigram.lower())
 
         # heavy weight for each unique bigram
-        print(bigram_set)
         match_score += 50 * len(bigram_set)
-        map[key] = match_score
+        occurence_map[key] = match_score
 
-    return map
+    return occurence_map, paragraph_map
+
+def addToParagraphMap(paragraph_map, key, p):
+    if not key in paragraph_map:
+        paragraph_map[key] = set()
+
+    paragraph_map[key].add(p)
 
 def sortMap(occurence_map):
     return sorted(occurence_map.items(), key=itemgetter(1), reverse=True)
+
+def displayRelevantParagraphs(parsed_articles, sorted_map, paragraph_map):
+    for (key, value) in sorted_map:
+        paragraph_list = list(paragraph_map[key])
+        article_text = parsed_articles[key]
+        article_paragraphs = article_text.split('\n\n')
+        print('--{}--'.format(key))
+        for p in paragraph_list:
+            print(article_paragraphs[p])
+        print('')
 
 # Execute -------------------------------------------------------------------- #
 news_api_key, parser_api_key = getApiKeys()
@@ -91,7 +115,7 @@ parsed_articles = parseArticles(articles)
 print(len(parsed_articles))
 bigram_query = splitQueryBigrams()
 
-occurence_map = countOccurences(bigram_query, parsed_articles)
-print(occurence_map)
+occurence_map, paragraph_map = countOccurences(bigram_query, parsed_articles)
 sorted_map = sortMap(occurence_map)
-print(sorted_map)
+
+displayRelevantParagraphs(parsed_articles, sorted_map, paragraph_map)
