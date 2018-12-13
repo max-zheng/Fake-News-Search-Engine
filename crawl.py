@@ -43,7 +43,6 @@ def parseArticles(articles):
         if 'body' in response_json and 'title' in response_json:
             parsed_articles[response_json['title']] = response_json['body']
 
-    print(parsed_articles)
     return parsed_articles
 
 def splitQueryBigrams():
@@ -52,7 +51,6 @@ def splitQueryBigrams():
     bigram = []
     for tuple in bigram_tuple:
         bigram.append(tuple[0] + ' ' + tuple[1])
-    print(bigram)
     return bigram
 
 def countOccurences(bigram_query, parsed_articles):
@@ -97,13 +95,14 @@ def sortMap(occurence_map):
 
 def displayRelevantParagraphs(parsed_articles, sorted_map, paragraph_map):
     for (key, value) in sorted_map:
-        paragraph_list = list(paragraph_map[key])
-        article_text = parsed_articles[key]
-        article_paragraphs = article_text.split('\n\n')
-        print('--{}--'.format(key))
-        for p in paragraph_list:
-            print(article_paragraphs[p])
-        print('')
+        if key in paragraph_map:
+            paragraph_list = list(paragraph_map[key])
+            article_text = parsed_articles[key]
+            article_paragraphs = article_text.split('\n\n')
+            print('--{}--'.format(key))
+            for p in paragraph_list:
+                print(article_paragraphs[p])
+            print('')
 
 # Execute -------------------------------------------------------------------- #
 news_api_key, parser_api_key = getApiKeys()
@@ -112,7 +111,6 @@ articles = getArticles()
 
 articles = articles['articles']
 parsed_articles = parseArticles(articles)
-print(len(parsed_articles))
 bigram_query = splitQueryBigrams()
 
 occurence_map, paragraph_map = countOccurences(bigram_query, parsed_articles)
