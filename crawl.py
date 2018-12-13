@@ -1,5 +1,4 @@
 from newsapi import NewsApiClient
-from bs4 import BeautifulSoup
 from operator import itemgetter
 import requests
 import json
@@ -20,7 +19,7 @@ def getApiKeys():
 def getArticles():
     result = {}
     # /v2/top-headlines
-    top_headlines = newsapi.get_top_headlines(q='including lying to Congress and paying hush money to women who alleged affairs with',
+    top_headlines = newsapi.get_top_headlines(q=query,
                                               sources='bbc-news,the-verge,abc-news,the-washington-times,usa-today,the-washington-post',
                                               language='en')
     all_headlines = newsapi.get_everything(q=query, sources= sources, language='en',

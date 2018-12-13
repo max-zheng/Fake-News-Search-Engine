@@ -1,0 +1,6 @@
+$def with (res)
+$for r in res:
+  <p>Title:$r[0]</p>
+  <p>Link:$r[1]</p>
+  $for p in range(2,len(r)):
+    <p>Paragraph:$r[p]<p/>
